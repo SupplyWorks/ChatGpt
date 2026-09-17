@@ -5,29 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatGPT Bridge Test</title>
 </head>
+
 <body>
-    <h2>参数转发测试</h2>
-    <div id="status">正在测试...</div>
 
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const msg = params.get("msg") || "hello";
+<h2>参数转发测试</h2>
+<div id="status">正在连接服务器...</div>
 
-        // 你的服务器
-        const serverUrl =
-            "http://123.57.0.196:9520/bridge?msg=" +
-            encodeURIComponent(msg);
+<script>
+    // 从当前网址读取参数
+    // 例如：
+    // https://supplyworks.github.io/ChatGpt/?msg=hello
+    const params = new URLSearchParams(window.location.search);
 
-        fetch(serverUrl)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("status").textContent =
-                    "服务器返回：" + data;
-            })
-            .catch(error => {
-                document.getElementById("status").textContent =
-                    "请求失败：" + error;
-            });
-    </script>
+    const msg = params.get("msg") || "hello";
+
+    // 通过 HTTPS 请求你的服务器
+    const serverUrl =
+        "https://visaservice.icu:9520/bridge?msg=" +
+        encodeURIComponent(msg);
+
+    fetch(serverUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP " + response.status);
+            }
+
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("status").textContent =
+                "服务器返回：" + data;
+        })
+        .catch(error => {
+            document.getElementById("status").textContent =
+                "请求失败：" + error;
+        });
+</script>
+
 </body>
 </html>
