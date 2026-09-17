@@ -1,1 +1,33 @@
-傻ChatGpt，看见了吗？
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Bridge Test</title>
+</head>
+<body>
+    <h2>参数转发测试</h2>
+    <div id="status">正在测试...</div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const msg = params.get("msg") || "hello";
+
+        // 你的服务器
+        const serverUrl =
+            "http://123.57.0.196:9520/bridge?msg=" +
+            encodeURIComponent(msg);
+
+        fetch(serverUrl)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("status").textContent =
+                    "服务器返回：" + data;
+            })
+            .catch(error => {
+                document.getElementById("status").textContent =
+                    "请求失败：" + error;
+            });
+    </script>
+</body>
+</html>
